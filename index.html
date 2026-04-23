@@ -75,31 +75,33 @@ letters.forEach((letter, i) => {
     });
 });
 
-// 🚀 Cohetes (más lentos)
-let rockets = [];
+// 💣 Bombas (más lentas y grandes)
+let bombs = [];
 let explosions = [];
 
-function launchRocket() {
-    rockets.push({
+function launchBomb() {
+    bombs.push({
         x: Math.random() * w,
         y: h,
-        speed: Math.random() * 2 + 2, // 🔽 más lento
-        color: `hsl(${Math.random()*360},100%,50%)`
+        speed: Math.random() * 1.2 + 0.8, // 🔽 MUCHO más lento
+        size: Math.random() * 6 + 6,      // 🔼 bomba más grande
+        color: `hsl(${Math.random()*360},100%,60%)`
     });
 }
 
-setInterval(launchRocket, 1200);
+setInterval(launchBomb, 1500);
 
-function explode(x, y, baseColor) {
+// 💥 Explosión GRANDE
+function explode(x, y) {
     explosions.push({
         x,
         y,
-        particles: Array.from({length: 80}).map(() => ({ // 🔼 más partículas
-            dx: (Math.random() - 0.5) * 10,
-            dy: (Math.random() - 0.5) * 10,
-            life: 80, // 🔼 duran más
-            size: Math.random() * 3 + 2, // 🔼 más grandes
-            color: `hsl(${Math.random()*360},100%,60%)` // 🎨 multicolor
+        particles: Array.from({length: 120}).map(() => ({ // 🔼 muchas partículas
+            dx: (Math.random() - 0.5) * 14,
+            dy: (Math.random() - 0.5) * 14,
+            life: 100, // 🔼 dura más
+            size: Math.random() * 4 + 3, // 🔼 partículas grandes
+            color: `hsl(${Math.random()*360},100%,60%)`
         }))
     });
 }
@@ -122,16 +124,18 @@ function animate() {
         ctx.fillText(letters[i], p.x, p.y);
     });
 
-    // 🚀 Subida de cohetes
-    rockets.forEach((r, index) => {
-        r.y -= r.speed;
+    // 💣 Bombas subiendo
+    bombs.forEach((b, index) => {
+        b.y -= b.speed;
 
-        ctx.fillStyle = r.color;
-        ctx.fillRect(r.x, r.y, 4, 12); // 🔼 más grande
+        ctx.fillStyle = b.color;
+        ctx.beginPath();
+        ctx.arc(b.x, b.y, b.size, 0, Math.PI * 2); // 🔵 forma de bomba
+        ctx.fill();
 
-        if (r.y < h / 2) {
-            explode(r.x, r.y, r.color);
-            rockets.splice(index, 1);
+        if (b.y < h / 2) {
+            explode(b.x, b.y);
+            bombs.splice(index, 1);
         }
     });
 
@@ -142,8 +146,8 @@ function animate() {
 
             ctx.fillStyle = p.color;
             ctx.fillRect(
-                exp.x + p.dx * (80 - p.life),
-                exp.y + p.dy * (80 - p.life),
+                exp.x + p.dx * (100 - p.life),
+                exp.y + p.dy * (100 - p.life),
                 p.size,
                 p.size
             );
