@@ -75,7 +75,7 @@ letters.forEach((letter, i) => {
     });
 });
 
-// 🚀 Cohetes que suben desde abajo
+// 🚀 Cohetes (más lentos)
 let rockets = [];
 let explosions = [];
 
@@ -83,21 +83,23 @@ function launchRocket() {
     rockets.push({
         x: Math.random() * w,
         y: h,
-        speed: Math.random() * 4 + 4
+        speed: Math.random() * 2 + 2, // 🔽 más lento
+        color: `hsl(${Math.random()*360},100%,50%)`
     });
 }
 
-setInterval(launchRocket, 1000);
+setInterval(launchRocket, 1200);
 
-function explode(x, y) {
+function explode(x, y, baseColor) {
     explosions.push({
         x,
         y,
-        particles: Array.from({length: 40}).map(() => ({
-            dx: (Math.random() - 0.5) * 6,
-            dy: (Math.random() - 0.5) * 6,
-            life: 60,
-            color: `hsl(${Math.random()*360},100%,50%)`
+        particles: Array.from({length: 80}).map(() => ({ // 🔼 más partículas
+            dx: (Math.random() - 0.5) * 10,
+            dy: (Math.random() - 0.5) * 10,
+            life: 80, // 🔼 duran más
+            size: Math.random() * 3 + 2, // 🔼 más grandes
+            color: `hsl(${Math.random()*360},100%,60%)` // 🎨 multicolor
         }))
     });
 }
@@ -111,7 +113,7 @@ function animate() {
 
     ctx.font = "28px Verdana";
 
-    // Letras
+    // Texto
     particles.forEach((p, i) => {
         p.x += (p.targetX - p.x) * 0.05;
         p.y += (p.targetY - p.y) * 0.05;
@@ -124,11 +126,11 @@ function animate() {
     rockets.forEach((r, index) => {
         r.y -= r.speed;
 
-        ctx.fillStyle = "white";
-        ctx.fillRect(r.x, r.y, 2, 8);
+        ctx.fillStyle = r.color;
+        ctx.fillRect(r.x, r.y, 4, 12); // 🔼 más grande
 
         if (r.y < h / 2) {
-            explode(r.x, r.y);
+            explode(r.x, r.y, r.color);
             rockets.splice(index, 1);
         }
     });
@@ -140,9 +142,10 @@ function animate() {
 
             ctx.fillStyle = p.color;
             ctx.fillRect(
-                exp.x + p.dx * (60 - p.life),
-                exp.y + p.dy * (60 - p.life),
-                2, 2
+                exp.x + p.dx * (80 - p.life),
+                exp.y + p.dy * (80 - p.life),
+                p.size,
+                p.size
             );
         });
     });
@@ -165,6 +168,3 @@ function animate() {
 
 animate();
 </script>
-
-</body>
-</html>
