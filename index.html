@@ -9,17 +9,28 @@ body {
     margin: 0;
     background: black;
     overflow: hidden;
-    font-family: 'Verdana';
+    font-family: Verdana;
 }
 
 canvas {
     display: block;
 }
 
+#foto {
+    position: absolute;
+    top: 10%;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 220px;
+    border-radius: 15px;
+    opacity: 0;
+    transition: 2s;
+}
+
 #msg {
     position: absolute;
     width: 100%;
-    top: 60%;
+    bottom: 10%;
     text-align: center;
     color: white;
     font-size: 22px;
@@ -31,7 +42,10 @@ canvas {
 <body>
 
 <canvas id="c"></canvas>
-<div id="msg">TE DESEA PRODUCCION FOODBOX 🎉</div>
+
+<img id="foto" src="karen.jpg">
+
+<div id="msg">🎉 Te desea Producción Foodbox 🎂</div>
 
 <script>
 const c = document.getElementById("c");
@@ -51,7 +65,6 @@ const letters = text.split("");
 
 let particles = [];
 
-// Crear partículas iniciales
 letters.forEach((letter, i) => {
     particles.push({
         x: Math.random() * w,
@@ -62,14 +75,25 @@ letters.forEach((letter, i) => {
     });
 });
 
-let fireworks = [];
+// 🚀 Cohetes que suben desde abajo
+let rockets = [];
+let explosions = [];
 
-// Fuegos artificiales
-function createFirework() {
-    fireworks.push({
+function launchRocket() {
+    rockets.push({
         x: Math.random() * w,
-        y: Math.random() * h / 2,
-        particles: Array.from({length: 30}).map(() => ({
+        y: h,
+        speed: Math.random() * 4 + 4
+    });
+}
+
+setInterval(launchRocket, 1000);
+
+function explode(x, y) {
+    explosions.push({
+        x,
+        y,
+        particles: Array.from({length: 40}).map(() => ({
             dx: (Math.random() - 0.5) * 6,
             dy: (Math.random() - 0.5) * 6,
             life: 60,
@@ -77,8 +101,6 @@ function createFirework() {
         }))
     });
 }
-
-setInterval(createFirework, 1200);
 
 let frame = 0;
 
@@ -89,7 +111,7 @@ function animate() {
 
     ctx.font = "28px Verdana";
 
-    // Animar letras
+    // Letras
     particles.forEach((p, i) => {
         p.x += (p.targetX - p.x) * 0.05;
         p.y += (p.targetY - p.y) * 0.05;
@@ -98,23 +120,43 @@ function animate() {
         ctx.fillText(letters[i], p.x, p.y);
     });
 
-    // Dibujar fuegos artificiales
-    fireworks.forEach(fw => {
-        fw.particles.forEach(p => {
-            fw.x += 0;
-            fw.y += 0;
+    // 🚀 Subida de cohetes
+    rockets.forEach((r, index) => {
+        r.y -= r.speed;
+
+        ctx.fillStyle = "white";
+        ctx.fillRect(r.x, r.y, 2, 8);
+
+        if (r.y < h / 2) {
+            explode(r.x, r.y);
+            rockets.splice(index, 1);
+        }
+    });
+
+    // 💥 Explosiones
+    explosions.forEach(exp => {
+        exp.particles.forEach(p => {
             p.life--;
 
             ctx.fillStyle = p.color;
-            ctx.fillRect(fw.x + p.dx * (60 - p.life), fw.y + p.dy * (60 - p.life), 2, 2);
+            ctx.fillRect(
+                exp.x + p.dx * (60 - p.life),
+                exp.y + p.dy * (60 - p.life),
+                2, 2
+            );
         });
     });
 
-    // Limpiar partículas muertas
-    fireworks = fireworks.filter(fw => fw.particles.some(p => p.life > 0));
+    explosions = explosions.filter(e => 
+        e.particles.some(p => p.life > 0)
+    );
 
-    // Mostrar mensaje final
-    if (frame > 120) {
+    // Mostrar imagen y mensaje
+    if (frame > 100) {
+        document.getElementById("foto").style.opacity = 1;
+    }
+
+    if (frame > 160) {
         document.getElementById("msg").style.opacity = 1;
     }
 
