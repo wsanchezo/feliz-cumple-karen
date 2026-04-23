@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<title>Feliz Cumpleaños Karen</title>
+
+<style>
+body {
+    margin: 0;
+    background: black;
+    overflow: hidden;
+    font-family: 'Verdana';
+}
+
+canvas {
+    display: block;
+}
+
+#msg {
+    position: absolute;
+    width: 100%;
+    top: 60%;
+    text-align: center;
+    color: white;
+    font-size: 22px;
+    opacity: 0;
+    transition: 2s;
+}
+</style>
+</head>
+<body>
+
+<canvas id="c"></canvas>
+<div id="msg">Con cariño, Producción Foodbox 🎉</div>
+
+<script>
+const c = document.getElementById("c");
+const ctx = c.getContext("2d");
+
+let w, h;
+
+function resize() {
+    w = c.width = window.innerWidth;
+    h = c.height = window.innerHeight;
+}
+window.addEventListener("resize", resize);
+resize();
+
+const text = "FELIZ CUMPLEAÑOS KAREN";
+const letters = text.split("");
+
+let particles = [];
+
+// Crear partículas iniciales
+letters.forEach((letter, i) => {
+    particles.push({
+        x: Math.random() * w,
+        y: Math.random() * h,
+        targetX: w / 2 - (letters.length * 12) + i * 24,
+        targetY: h / 2,
+        color: `hsl(${Math.random()*360},100%,60%)`
+    });
+});
+
+let fireworks = [];
+
+// Fuegos artificiales
+function createFirework() {
+    fireworks.push({
+        x: Math.random() * w,
+        y: Math.random() * h / 2,
+        particles: Array.from({length: 30}).map(() => ({
+            dx: (Math.random() - 0.5) * 6,
+            dy: (Math.random() - 0.5) * 6,
+            life: 60,
+            color: `hsl(${Math.random()*360},100%,50%)`
+        }))
+    });
+}
+
+setInterval(createFirework, 1200);
+
+let frame = 0;
+
+function animate() {
+    frame++;
+    ctx.fillStyle = "rgba(0,0,0,0.2)";
+    ctx.fillRect(0, 0, w, h);
+
+    ctx.font = "28px Verdana";
+
+    // Animar letras
+    particles.forEach((p, i) => {
+        p.x += (p.targetX - p.x) * 0.05;
+        p.y += (p.targetY - p.y) * 0.05;
+
+        ctx.fillStyle = p.color;
+        ctx.fillText(letters[i], p.x, p.y);
+    });
+
+    // Dibujar fuegos artificiales
+    fireworks.forEach(fw => {
+        fw.particles.forEach(p => {
+            fw.x += 0;
+            fw.y += 0;
+            p.life--;
+
+            ctx.fillStyle = p.color;
+            ctx.fillRect(fw.x + p.dx * (60 - p.life), fw.y + p.dy * (60 - p.life), 2, 2);
+        });
+    });
+
+    // Limpiar partículas muertas
+    fireworks = fireworks.filter(fw => fw.particles.some(p => p.life > 0));
+
+    // Mostrar mensaje final
+    if (frame > 120) {
+        document.getElementById("msg").style.opacity = 1;
+    }
+
+    requestAnimationFrame(animate);
+}
+
+animate();
+</script>
+
+</body>
+</html>
