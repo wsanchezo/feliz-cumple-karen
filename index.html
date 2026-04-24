@@ -474,8 +474,8 @@ class Confetti {
   constructor() { this.reset(); this.y = Math.random() * H; }
   reset() {
     this.x = Math.random() * W;
-    this.y = -20;
-    this.size = Math.random() * 8 + 5;
+    this.y = 20;
+    this.size = Math.random() * 3 + 5;
     this.color = randomFrom(randomFrom(PALETTES));
     this.vy = Math.random() * 2 + 1;
     this.vx = (Math.random() - 0.5) * 1.5;
