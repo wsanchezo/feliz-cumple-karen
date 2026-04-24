@@ -1,173 +1,583 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-<meta charset="UTF-8">
-<title>FELIZ CUMPLEAÑOS KAREN</title>
-
+<title>FELIZ CUMPLEAÑOS KAREN 🎂</title>
+<link href="https://fonts.googleapis.com/css2?family=Pacifico&family=Quicksand:wght@400;600;700&display=swap" rel="stylesheet">
 <style>
-body {
-    margin: 0;
-    background: black;
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    background: #0a0010;
     overflow: hidden;
-    font-family: Verdana;
-}
+    font-family: 'Quicksand', sans-serif;
+    height: 100vh;
+    width: 100vw;
+  }
 
-canvas {
-    display: block;
-}
+  canvas {
+    position: fixed;
+    top: 0; left: 0;
+    z-index: 0;
+  }
 
-#foto {
+  /* ---- CAKE ---- */
+  #cake-wrap {
+    position: fixed;
+    bottom: -300px;
+    left: 50%;
+    transform: translateX(-50%);
+    z-index: 10;
+    transition: bottom 1.4s cubic-bezier(0.22, 1, 0.36, 1);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+  #cake-wrap.show { bottom: 6vh; }
+
+  .cake {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+
+  /* Candles */
+  .candles-row {
+    display: flex;
+    gap: 14px;
+    margin-bottom: -2px;
+    z-index: 5;
+  }
+  .candle {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+  .flame {
+    width: 10px;
+    height: 18px;
+    background: radial-gradient(ellipse at 50% 80%, #fff 0%, #ffe066 30%, #ff9800 70%, transparent 100%);
+    border-radius: 50% 50% 30% 30%;
+    animation: flicker 0.3s ease-in-out infinite alternate;
+    filter: drop-shadow(0 0 6px #ffe066);
+    margin-bottom: 2px;
+  }
+  @keyframes flicker {
+    0%   { transform: scaleX(1) scaleY(1) rotate(-3deg); }
+    100% { transform: scaleX(0.85) scaleY(1.1) rotate(3deg); }
+  }
+  .wick {
+    width: 2px;
+    height: 6px;
+    background: #333;
+  }
+  .candle-body {
+    width: 10px;
+    height: 38px;
+    border-radius: 4px 4px 2px 2px;
+  }
+  .c1 .candle-body { background: linear-gradient(to bottom, #ff6fd8, #c0279e); }
+  .c2 .candle-body { background: linear-gradient(to bottom, #ffe066, #ff9800); }
+  .c3 .candle-body { background: linear-gradient(to bottom, #6fecff, #0099cc); }
+  .c4 .candle-body { background: linear-gradient(to bottom, #a0ff6f, #38b000); }
+  .c5 .candle-body { background: linear-gradient(to bottom, #ff6f6f, #cc0000); }
+
+  /* Tier top */
+  .tier-top {
+    width: 200px;
+    height: 30px;
+    background: linear-gradient(to bottom, #ff9de2, #e564c8);
+    border-radius: 50%;
+    box-shadow: 0 0 18px #e564c899;
+    position: relative;
+    z-index: 4;
+  }
+  /* Tier 1 */
+  .tier1 {
+    width: 200px;
+    height: 65px;
+    background: linear-gradient(to bottom, #f7d6f0, #e48fd6);
+    border-radius: 0 0 8px 8px;
+    position: relative;
+    overflow: visible;
+    box-shadow: 0 6px 18px #c06aaa55;
+  }
+  .tier1::before {
+    content: '';
     position: absolute;
-    top: 100%;
-    left: 90%;
-    transform: translateX(-10%);
-    width: 220px;
-    border-radius: 15px;
-    opacity: 0;
-    transition: 10s;
-}
-
-#msg {
+    top: 0; left: 0; right: 0;
+    height: 16px;
+    background: repeating-linear-gradient(90deg, #ff9de2 0 16px, #ffd6f0 16px 32px);
+    border-radius: 0;
+    opacity: 0.7;
+  }
+  .tier1-deco {
     position: absolute;
+    bottom: 10px;
     width: 100%;
-    bottom: 10%;
-    text-align: center;
-    color: white;
+    display: flex;
+    justify-content: space-evenly;
+    font-size: 18px;
+  }
+
+  /* Tier mid ellipse */
+  .tier-mid {
+    width: 220px;
+    height: 20px;
+    background: linear-gradient(to bottom, #d45fb5, #b03898);
+    border-radius: 50%;
+    margin-top: -4px;
+    box-shadow: 0 4px 14px #b0389888;
+  }
+
+  /* Tier 2 */
+  .tier2 {
+    width: 280px;
+    height: 80px;
+    background: linear-gradient(to bottom, #fff3fb, #f7b8eb);
+    border-radius: 0 0 8px 8px;
+    position: relative;
+    overflow: visible;
+    box-shadow: 0 8px 20px #c06aaa44;
+  }
+  .tier2::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0; right: 0;
+    height: 16px;
+    background: repeating-linear-gradient(90deg, #e46dce 0 14px, #ffb8ef 14px 28px);
+    opacity: 0.6;
+  }
+  .tier2-deco {
+    position: absolute;
+    bottom: 12px;
+    width: 100%;
+    display: flex;
+    justify-content: space-evenly;
     font-size: 22px;
-    opacity: 0;
-    transition: 2s;
-}
+  }
+
+  /* Tier bottom ellipse */
+  .tier-bot {
+    width: 300px;
+    height: 22px;
+    background: linear-gradient(to bottom, #b03898, #8c1f7a);
+    border-radius: 50%;
+    margin-top: -5px;
+    box-shadow: 0 6px 16px #8c1f7a88;
+  }
+
+  /* Plate */
+  .plate {
+    width: 340px;
+    height: 22px;
+    background: linear-gradient(to bottom, #fff8fd, #e8c8e0);
+    border-radius: 50%;
+    margin-top: -5px;
+    box-shadow: 0 8px 24px #8c1f7a55;
+  }
+
+  /* ---- TITLE BANNER ---- */
+  #banner {
+    position: fixed;
+    top: -140px;
+    left: 0; right: 0;
+    text-align: center;
+    z-index: 10;
+    transition: top 1.2s cubic-bezier(0.22, 1, 0.36, 1);
+  }
+  #banner.show { top: 4vh; }
+
+  #banner h1 {
+    font-family: 'Pacifico', cursive;
+    font-size: clamp(28px, 6vw, 60px);
+    color: #fff;
+    text-shadow:
+      0 0 20px #ff6fd8,
+      0 0 40px #ff6fd8,
+      0 0 80px #d400ff,
+      2px 2px 0 #8c1f7a;
+    letter-spacing: 2px;
+    line-height: 1.2;
+  }
+  #banner h2 {
+    font-family: 'Pacifico', cursive;
+    font-size: clamp(36px, 8vw, 80px);
+    background: linear-gradient(90deg, #ffe066, #ff9de2, #6fecff, #a0ff6f, #ffe066);
+    background-size: 300%;
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    animation: shimmer 3s linear infinite;
+    text-shadow: none;
+    filter: drop-shadow(0 0 12px #ff9de2);
+  }
+  @keyframes shimmer {
+    0% { background-position: 0%; }
+    100% { background-position: 300%; }
+  }
+
+  /* ---- MSG ---- */
+  #msg {
+    position: fixed;
+    bottom: -80px;
+    right: 4vw;
+    z-index: 10;
+    background: linear-gradient(135deg, #2d0040cc, #0a0010cc);
+    border: 1.5px solid #e564c855;
+    border-radius: 18px;
+    padding: 14px 24px;
+    color: #fff;
+    font-size: clamp(13px, 2vw, 18px);
+    font-weight: 600;
+    text-align: center;
+    max-width: 260px;
+    backdrop-filter: blur(8px);
+    transition: bottom 1.2s cubic-bezier(0.22, 1, 0.36, 1) 0.5s;
+    line-height: 1.6;
+  }
+  #msg.show { bottom: 4vh; }
+  #msg .emoji-big { font-size: 28px; display: block; margin-bottom: 4px; }
+  #msg .brand {
+    margin-top: 10px;
+    font-size: 12px;
+    color: #e564c8;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+  }
+
+  /* Balloons */
+  .balloon {
+    position: fixed;
+    bottom: -160px;
+    z-index: 5;
+    animation: riseUp linear forwards;
+    pointer-events: none;
+  }
+  @keyframes riseUp {
+    to { bottom: 110vh; }
+  }
+  .balloon svg { filter: drop-shadow(0 0 8px var(--glow)); }
 </style>
 </head>
 <body>
 
 <canvas id="c"></canvas>
 
-<img id="foto" src="IMG-20260423-WA0000.jpg">
-<div id="msg">🎉 Te desea Producción Foodbox 🎂</div>
+<!-- Banner -->
+<div id="banner">
+  <h1>✨ Feliz Cumpleaños ✨</h1>
+  <h2>Karen 🎉</h2>
+</div>
+
+<!-- Cake -->
+<div id="cake-wrap">
+  <div class="cake">
+    <!-- Candles -->
+    <div class="candles-row">
+      <div class="candle c1"><div class="flame"></div><div class="wick"></div><div class="candle-body"></div></div>
+      <div class="candle c2"><div class="flame"></div><div class="wick"></div><div class="candle-body"></div></div>
+      <div class="candle c3"><div class="flame"></div><div class="wick"></div><div class="candle-body"></div></div>
+      <div class="candle c4"><div class="flame"></div><div class="wick"></div><div class="candle-body"></div></div>
+      <div class="candle c5"><div class="flame"></div><div class="wick"></div><div class="candle-body"></div></div>
+    </div>
+    <!-- Top tier -->
+    <div class="tier-top"></div>
+    <div class="tier1">
+      <div class="tier1-deco"><span>🌸</span><span>💕</span><span>🌸</span></div>
+    </div>
+    <div class="tier-mid"></div>
+    <!-- Bottom tier -->
+    <div class="tier2">
+      <div class="tier2-deco"><span>🎀</span><span>⭐</span><span>💖</span><span>⭐</span><span>🎀</span></div>
+    </div>
+    <div class="tier-bot"></div>
+    <div class="plate"></div>
+  </div>
+</div>
+
+<!-- Message card -->
+<div id="msg">
+  <span class="emoji-big">🥳🎂🎁</span>
+  Que este día esté lleno<br>de alegría y amor,<br><b>Karen</b>!
+  <div class="brand">🎉 Producción Foodbox 🎉</div>
+</div>
 
 <script>
-const c = document.getElementById("c");
-const ctx = c.getContext("2d");
-
-let w, h;
-
-function resize() {
-    w = c.width = window.innerWidth;
-    h = c.height = window.innerHeight;
-}
-window.addEventListener("resize", resize);
+// ─── CANVAS SETUP ─────────────────────────────────────────────────────────────
+const c = document.getElementById('c');
+const ctx = c.getContext('2d');
+let W, H;
+function resize() { W = c.width = innerWidth; H = c.height = innerHeight; }
+window.addEventListener('resize', resize);
 resize();
 
-const text = "FELIZ CUMPLEAÑOS KAREN";
-const letters = text.split("");
+// ─── FIREWORKS ENGINE ─────────────────────────────────────────────────────────
+const PALETTES = [
+  ['#ff6fd8','#ff9de2','#e564c8','#d400ff','#ffe066'],
+  ['#6fecff','#00c2d4','#ffe066','#ff9800','#fff'],
+  ['#a0ff6f','#38b000','#ffe066','#fff','#ff6fd8'],
+  ['#fff','#ffe066','#ff6fd8','#6fecff','#a0ff6f'],
+  ['#ff6f6f','#ff9800','#ffe066','#ffb8ef','#fff'],
+];
 
-let particles = [];
+function randomFrom(arr) { return arr[Math.floor(Math.random() * arr.length)]; }
 
-letters.forEach((letter, i) => {
-    particles.push({
-        x: Math.random() * w,
-        y: Math.random() * h,
-        targetX: w / 2 - (letters.length * 12) + i * 24,
-        targetY: h / 2,
-        color: `hsl(${Math.random()*360},100%,60%)`
-    });
-});
-
-// 💣 Bombas (más lentas y grandes)
-let bombs = [];
-let explosions = [];
-
-function launchBomb() {
-    bombs.push({
-        x: Math.random() * w,
-        y: h,
-        speed: Math.random() * 1.2 + 0.8, // 🔽 MUCHO más lento
-        size: Math.random() * 6 + 6,      // 🔼 bomba más grande
-        color: `hsl(${Math.random()*360},100%,60%)`
-    });
+class Particle {
+  constructor(x, y, color, angle, speed, gravity = 0.12, trail = false) {
+    this.x = x; this.y = y;
+    this.color = color;
+    this.vx = Math.cos(angle) * speed;
+    this.vy = Math.sin(angle) * speed;
+    this.alpha = 1;
+    this.gravity = gravity;
+    this.trail = trail;
+    this.size = trail ? 2.5 : (Math.random() * 2.5 + 1.5);
+    this.decay = Math.random() * 0.013 + 0.012;
+    this.history = [];
+  }
+  update() {
+    if (this.trail) this.history.push({x: this.x, y: this.y, a: this.alpha});
+    if (this.history.length > 8) this.history.shift();
+    this.vy += this.gravity;
+    this.vx *= 0.98;
+    this.vy *= 0.98;
+    this.x += this.vx;
+    this.y += this.vy;
+    this.alpha -= this.decay;
+  }
+  draw() {
+    if (this.trail && this.history.length > 1) {
+      for (let i = 0; i < this.history.length - 1; i++) {
+        const p = this.history[i];
+        ctx.beginPath();
+        ctx.arc(p.x, p.y, this.size * (i / this.history.length), 0, Math.PI*2);
+        ctx.fillStyle = this.color;
+        ctx.globalAlpha = p.a * (i / this.history.length) * 0.5;
+        ctx.fill();
+      }
+    }
+    ctx.globalAlpha = this.alpha;
+    ctx.beginPath();
+    ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
+    ctx.fillStyle = this.color;
+    ctx.shadowBlur = 12;
+    ctx.shadowColor = this.color;
+    ctx.fill();
+    ctx.shadowBlur = 0;
+    ctx.globalAlpha = 1;
+  }
+  dead() { return this.alpha <= 0; }
 }
 
-setInterval(launchBomb, 1500);
+class Rocket {
+  constructor() {
+    this.x = Math.random() * W * 0.8 + W * 0.1;
+    this.y = H + 10;
+    this.tx = Math.random() * W * 0.6 + W * 0.2;
+    this.ty = Math.random() * H * 0.45 + H * 0.05;
+    const dx = this.tx - this.x, dy = this.ty - this.y;
+    const dist = Math.sqrt(dx*dx + dy*dy);
+    const speed = Math.random() * 5 + 8;
+    this.vx = (dx / dist) * speed;
+    this.vy = (dy / dist) * speed;
+    this.trail = [];
+    this.palette = randomFrom(PALETTES);
+    this.exploded = false;
+  }
+  update(particles) {
+    this.trail.push({x: this.x, y: this.y});
+    if (this.trail.length > 14) this.trail.shift();
+    this.x += this.vx; this.y += this.vy;
+    if (
+      (this.vy > 0 && this.y >= this.ty) ||
+      Math.abs(this.y - this.ty) < 8
+    ) {
+      this.explode(particles);
+      this.exploded = true;
+    }
+  }
+  explode(particles) {
+    const type = Math.floor(Math.random() * 4);
+    const count = Math.floor(Math.random() * 60) + 80;
 
-// 💥 Explosión GRANDE
-function explode(x, y) {
-    explosions.push({
-        x,
-        y,
-        particles: Array.from({length: 120}).map(() => ({ // 🔼 muchas partículas
-            dx: (Math.random() - 0.5) * 14,
-            dy: (Math.random() - 0.5) * 14,
-            life: 100, // 🔼 dura más
-            size: Math.random() * 4 + 3, // 🔼 partículas grandes
-            color: `hsl(${Math.random()*360},100%,60%)`
-        }))
-    });
+    if (type === 0) {
+      // Classic burst
+      for (let i = 0; i < count; i++) {
+        const angle = (Math.PI * 2 / count) * i;
+        const speed = Math.random() * 4.5 + 2;
+        particles.push(new Particle(this.x, this.y, randomFrom(this.palette), angle, speed, 0.12, false));
+      }
+    } else if (type === 1) {
+      // Star pattern
+      for (let i = 0; i < 10; i++) {
+        const baseAngle = (Math.PI * 2 / 10) * i;
+        for (let j = 0; j < 8; j++) {
+          const spread = (Math.random() - 0.5) * 0.4;
+          const speed = (j % 2 === 0 ? 4 : 2.2) + Math.random();
+          particles.push(new Particle(this.x, this.y, randomFrom(this.palette), baseAngle + spread, speed, 0.1, true));
+        }
+      }
+    } else if (type === 2) {
+      // Ring + sparkles
+      for (let i = 0; i < 60; i++) {
+        const angle = (Math.PI * 2 / 60) * i;
+        particles.push(new Particle(this.x, this.y, randomFrom(this.palette), angle, 5.5, 0.06, false));
+      }
+      for (let i = 0; i < 40; i++) {
+        const angle = Math.random() * Math.PI * 2;
+        const speed = Math.random() * 2 + 0.5;
+        particles.push(new Particle(this.x, this.y, '#fff', angle, speed, 0.15, false));
+      }
+    } else {
+      // Double burst
+      for (let i = 0; i < 50; i++) {
+        const angle = (Math.PI * 2 / 50) * i;
+        particles.push(new Particle(this.x, this.y, randomFrom(this.palette), angle, 5, 0.1, true));
+      }
+      setTimeout(() => {
+        for (let i = 0; i < 50; i++) {
+          const angle = (Math.PI * 2 / 50) * i + 0.06;
+          particles.push(new Particle(this.x, this.y, randomFrom(this.palette), angle, 2.5, 0.12, false));
+        }
+      }, 120);
+    }
+    // Sparkle center flash
+    for (let i = 0; i < 12; i++) {
+      const angle = Math.random() * Math.PI * 2;
+      particles.push(new Particle(this.x, this.y, '#fff', angle, Math.random()*2+0.5, 0.2, false));
+    }
+  }
+  draw() {
+    for (let i = 0; i < this.trail.length; i++) {
+      const t = this.trail[i];
+      ctx.beginPath();
+      ctx.arc(t.x, t.y, (i / this.trail.length) * 2.5, 0, Math.PI*2);
+      ctx.fillStyle = '#ffe066';
+      ctx.globalAlpha = (i / this.trail.length) * 0.7;
+      ctx.fill();
+      ctx.globalAlpha = 1;
+    }
+    ctx.beginPath();
+    ctx.arc(this.x, this.y, 3, 0, Math.PI*2);
+    ctx.fillStyle = '#fff';
+    ctx.shadowBlur = 14;
+    ctx.shadowColor = '#ffe066';
+    ctx.fill();
+    ctx.shadowBlur = 0;
+  }
+  dead() { return this.exploded; }
 }
+
+// ─── CONFETTI ─────────────────────────────────────────────────────────────────
+class Confetti {
+  constructor() { this.reset(); this.y = Math.random() * H; }
+  reset() {
+    this.x = Math.random() * W;
+    this.y = -20;
+    this.size = Math.random() * 8 + 5;
+    this.color = randomFrom(randomFrom(PALETTES));
+    this.vy = Math.random() * 2 + 1;
+    this.vx = (Math.random() - 0.5) * 1.5;
+    this.angle = Math.random() * Math.PI * 2;
+    this.spin = (Math.random() - 0.5) * 0.15;
+    this.shape = Math.random() > 0.5 ? 'rect' : 'circle';
+  }
+  update() {
+    this.y += this.vy; this.x += this.vx; this.angle += this.spin;
+    if (this.y > H + 20) this.reset();
+  }
+  draw() {
+    ctx.save();
+    ctx.translate(this.x, this.y);
+    ctx.rotate(this.angle);
+    ctx.fillStyle = this.color;
+    ctx.globalAlpha = 0.9;
+    if (this.shape === 'rect') ctx.fillRect(-this.size/2, -this.size/4, this.size, this.size/2);
+    else { ctx.beginPath(); ctx.arc(0, 0, this.size/2, 0, Math.PI*2); ctx.fill(); }
+    ctx.globalAlpha = 1;
+    ctx.restore();
+  }
+}
+
+// ─── STATE ────────────────────────────────────────────────────────────────────
+let rockets = [], particles = [], confettis = [];
+for (let i = 0; i < 60; i++) confettis.push(new Confetti());
 
 let frame = 0;
 
-function animate() {
-    frame++;
-    ctx.fillStyle = "rgba(0,0,0,0.2)";
-    ctx.fillRect(0, 0, w, h);
-
-    ctx.font = "28px Verdana";
-
-    // Texto
-    particles.forEach((p, i) => {
-        p.x += (p.targetX - p.x) * 0.05;
-        p.y += (p.targetY - p.y) * 0.05;
-
-        ctx.fillStyle = p.color;
-        ctx.fillText(letters[i], p.x, p.y);
-    });
-
-    // 💣 Bombas subiendo
-    bombs.forEach((b, index) => {
-        b.y -= b.speed;
-
-        ctx.fillStyle = b.color;
-        ctx.beginPath();
-        ctx.arc(b.x, b.y, b.size, 0, Math.PI * 2); // 🔵 forma de bomba
-        ctx.fill();
-
-        if (b.y < h / 2) {
-            explode(b.x, b.y);
-            bombs.splice(index, 1);
-        }
-    });
-
-    // 💥 Explosiones
-    explosions.forEach(exp => {
-        exp.particles.forEach(p => {
-            p.life--;
-
-            ctx.fillStyle = p.color;
-            ctx.fillRect(
-                exp.x + p.dx * (100 - p.life),
-                exp.y + p.dy * (100 - p.life),
-                p.size,
-                p.size
-            );
-        });
-    });
-
-    explosions = explosions.filter(e => 
-        e.particles.some(p => p.life > 0)
-    );
-
-    // Mostrar imagen y mensaje
-    if (frame > 100) {
-        document.getElementById("foto").style.opacity = 1;
-    }
-
-    if (frame > 160) {
-        document.getElementById("msg").style.opacity = 1;
-    }
-
-    requestAnimationFrame(animate);
+function launchRocket() {
+  rockets.push(new Rocket());
 }
 
-animate();
+// Launch pattern: quick burst then steady
+const launches = [200, 600, 1000, 1400, 1800, 2400, 3000];
+launches.forEach(d => setTimeout(launchRocket, d));
+setInterval(launchRocket, 2200);
+
+// ─── MAIN LOOP ────────────────────────────────────────────────────────────────
+function loop() {
+  frame++;
+  ctx.fillStyle = 'rgba(10,0,16,0.22)';
+  ctx.fillRect(0, 0, W, H);
+
+  // Stars twinkling
+  if (frame % 3 === 0) {
+    for (let i = 0; i < 3; i++) {
+      ctx.beginPath();
+      ctx.arc(Math.random()*W, Math.random()*H, Math.random()*1.2+0.3, 0, Math.PI*2);
+      ctx.fillStyle = `rgba(255,255,255,${Math.random()*0.6+0.2})`;
+      ctx.fill();
+    }
+  }
+
+  confettis.forEach(cf => { cf.update(); cf.draw(); });
+
+  rockets.forEach(r => { r.update(particles); r.draw(); });
+  rockets = rockets.filter(r => !r.dead());
+
+  particles.forEach(p => { p.update(); p.draw(); });
+  particles = particles.filter(p => !p.dead());
+
+  // Show elements
+  if (frame === 20) document.getElementById('banner').classList.add('show');
+  if (frame === 60) document.getElementById('cake-wrap').classList.add('show');
+  if (frame === 120) document.getElementById('msg').classList.add('show');
+
+  requestAnimationFrame(loop);
+}
+
+loop();
+
+// ─── BALLOONS ─────────────────────────────────────────────────────────────────
+const balloonColors = [
+  {fill:'#ff6fd8', glow:'#ff6fd8', dark:'#c02098'},
+  {fill:'#ffe066', glow:'#ffe066', dark:'#c8900a'},
+  {fill:'#6fecff', glow:'#6fecff', dark:'#0099bb'},
+  {fill:'#a0ff6f', glow:'#a0ff6f', dark:'#38a000'},
+  {fill:'#ff9de2', glow:'#ff9de2', dark:'#b03898'},
+];
+
+function spawnBalloon() {
+  const bc = randomFrom(balloonColors);
+  const el = document.createElement('div');
+  el.className = 'balloon';
+  el.style.left = (Math.random() * 90 + 2) + 'vw';
+  const dur = (Math.random() * 7 + 8).toFixed(1) + 's';
+  el.style.animation = `riseUp ${dur} linear forwards`;
+  el.style.setProperty('--glow', bc.glow);
+  el.innerHTML = `<svg width="48" height="64" viewBox="0 0 48 64" fill="none" xmlns="http://www.w3.org/2000/svg">
+    <ellipse cx="24" cy="24" rx="20" ry="22" fill="${bc.fill}"/>
+    <ellipse cx="17" cy="14" rx="5" ry="7" fill="white" opacity="0.25"/>
+    <path d="M24 46 Q22 52 26 58 Q22 60 24 64" stroke="${bc.dark}" stroke-width="1.5" fill="none"/>
+    <polygon points="20,44 28,44 24,48" fill="${bc.dark}"/>
+  </svg>`;
+  document.body.appendChild(el);
+  el.addEventListener('animationend', () => el.remove());
+}
+
+setInterval(spawnBalloon, 1400);
+setTimeout(() => { for(let i=0;i<5;i++) setTimeout(spawnBalloon, i*300); }, 500);
 </script>
+</body>
+</html>
